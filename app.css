@@ -1,0 +1,727 @@
+/* Import premium Cairo font for modern Arabic typography */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Outfit:wght@300;400;600;700&display=swap');
+
+:root {
+    /* Color System */
+    --primary: #1e3a8a;       /* Deep Navy */
+    --primary-light: #3b82f6; /* Modern Blue */
+    --secondary: #0f172a;     /* Slate 900 */
+    --accent: #0ea5e9;        /* Sky Blue */
+    
+    /* Institutional & Google colors updated to professional shades */
+    --google-blue: #2563eb;
+    --google-red: #dc2626;
+    --google-green: #16a34a;
+    --google-yellow: #eab308;
+    
+    /* Neutral Light Theme */
+    --bg: #f1f5f9;            /* Soft Slate Grey */
+    --card: rgba(255, 255, 255, 0.85);
+    --card-solid: #ffffff;
+    --text: #0f172a;
+    --text-muted: #475569;
+    --border: #e2e8f0;
+    --ring: rgba(37, 99, 235, 0.2);
+    
+    /* Shadow & Effects */
+    --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 30px;
+    
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+}
+
+[data-theme="dark"] {
+    /* Neutral Dark Theme */
+    --bg: #090d16;            /* Deep Space Blue */
+    --card: rgba(17, 24, 39, 0.85);
+    --card-solid: #111827;
+    --text: #f8fafc;
+    --text-muted: #94a3b8;
+    --border: #1e293b;
+    --ring: rgba(59, 130, 246, 0.3);
+    --card-border: rgba(255, 255, 255, 0.05);
+}
+
+/* Global Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+    transition: background-color var(--transition-normal), color var(--transition-normal);
+    position: relative;
+}
+
+/* Elegant Mesh Background Pattern */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+    pointer-events: none;
+}
+
+[data-theme="dark"] body::before {
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(14, 165, 233, 0.08) 0%, transparent 40%);
+}
+
+/* Loader Styles */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: background-color var(--transition-normal);
+}
+
+.google-loader {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    padding: 6px;
+    background: conic-gradient(var(--google-blue) 10%, var(--google-red) 10% 40%, var(--google-yellow) 40% 70%, var(--google-green) 70%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #fff) padding-box;
+    mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #fff) padding-box;
+    animation: spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(1turn); }
+}
+
+/* Page Layout & Transitions */
+.page {
+    display: none;
+    padding: 40px 20px;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: calc(100vh - 180px);
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.page.active {
+    display: flex;
+    animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Institutional Header Bar */
+.school-header-bar {
+    text-align: center;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #ffffff;
+    box-shadow: var(--shadow-lg);
+    border-bottom: 4px solid var(--google-yellow);
+    position: relative;
+    overflow: hidden;
+}
+
+.school-header-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+}
+
+.school-header-bar h2 {
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.school-header-bar h1 {
+    font-size: 32px;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    margin-bottom: 6px;
+}
+
+.school-header-bar h3 {
+    font-size: 14px;
+    font-weight: 300;
+    opacity: 0.8;
+}
+
+/* Modern Title Design */
+.main-title {
+    font-size: 48px;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: -1px;
+}
+
+/* Premium Buttons */
+.btn {
+    min-height: 60px;
+    min-width: 240px;
+    padding: 0 35px;
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 20px;
+    border: none;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-md);
+    font-family: 'Cairo', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(255, 255, 255, 0.15), transparent);
+    pointer-events: none;
+}
+
+.btn-blue {
+    background: linear-gradient(135deg, var(--google-blue), #1d4ed8);
+}
+
+.btn-red {
+    background: linear-gradient(135deg, var(--google-red), #b91c1c);
+}
+
+.btn-gray {
+    background: linear-gradient(135deg, #475569, #334155);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    filter: brightness(1.05);
+}
+
+.btn:active {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Glassmorphism Containers */
+.form-container {
+    width: 100%;
+    max-width: 900px;
+    background: var(--card);
+    padding: 45px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-xl);
+    text-align: center;
+    transition: background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+/* Inputs, Textareas, and Selects */
+input[type="text"], 
+input[type="password"], 
+input[type="number"], 
+input[type="date"], 
+textarea, 
+select {
+    width: 100%;
+    padding: 16px 20px;
+    margin: 12px 0;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--card-solid);
+    color: var(--text);
+    font-size: 16px;
+    font-family: 'Cairo', sans-serif;
+    text-align: right;
+    transition: all var(--transition-fast);
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 4px var(--ring);
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* Password Toggle Container */
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    padding-left: 60px; /* Make space for eye icon on the left in RTL */
+}
+
+.password-container button {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
+}
+
+.password-container button:hover {
+    color: var(--text);
+}
+
+/* Admin Dashboard Layout */
+.admin-layout {
+    display: flex;
+    width: 100%;
+    gap: 30px;
+    margin-top: 30px;
+    height: 800px;
+}
+
+.sidebar {
+    width: 320px;
+    background: var(--card-solid);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    overflow-y: auto;
+    text-align: right;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h3 {
+    margin-bottom: 20px;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--primary);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.edit-panel {
+    flex: 1;
+    background: var(--card-solid);
+    border-radius: var(--radius-md);
+    padding: 30px;
+    overflow-y: auto;
+    text-align: right;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+}
+
+#sidebarContainer {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+/* Custom Scrollbars */
+.sidebar::-webkit-scrollbar, 
+.edit-panel::-webkit-scrollbar, 
+#sidebarContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb, 
+.edit-panel::-webkit-scrollbar-thumb, 
+#sidebarContainer::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 10px;
+}
+
+/* Student Sidebar Items */
+.student-item {
+    padding: 16px;
+    margin-bottom: 12px;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    font-size: 16px;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.student-item:hover {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+    transform: translateX(-4px); /* RTL slide effect */
+}
+
+/* Tables Styling */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 20px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 14px 16px;
+    text-align: center;
+    font-size: 15px;
+    border-bottom: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+}
+
+th:last-child, td:last-child {
+    border-left: none;
+}
+
+th {
+    background-color: var(--primary);
+    color: #ffffff;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="dark"] tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+tr:hover td {
+    background-color: rgba(37, 99, 235, 0.04);
+}
+
+/* Input Fields inside Grades Table */
+table input.gr-in {
+    width: 65px !important;
+    padding: 8px !important;
+    margin: 0 !important;
+    text-align: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+}
+
+table input.gr-in:focus {
+    box-shadow: 0 0 0 3px var(--ring);
+}
+
+/* Mini Buttons & Badges */
+.mini-btn {
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: 'Cairo', sans-serif;
+    background: var(--google-blue);
+    color: white;
+    margin: 4px;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mini-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    filter: brightness(1.05);
+}
+
+.mini-btn:active {
+    transform: translateY(0);
+}
+
+/* Admin Labels */
+.admin-label {
+    display: block;
+    margin-top: 18px;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--primary-light);
+    text-align: right;
+    margin-bottom: 4px;
+}
+
+/* Sub-edit Area layout */
+#subEditArea {
+    margin-top: 20px;
+    animation: fadeIn var(--transition-normal);
+}
+
+/* Dynamic styling for dynamic tabs */
+.student-tabs {
+    background: var(--bg);
+    padding: 8px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+}
+
+/* Grid Layout for Student Dashboard Details */
+#studentContentArea {
+    min-height: 400px;
+    padding: 30px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--card-solid);
+    color: var(--text);
+    transition: all var(--transition-normal);
+}
+
+#studentContentArea h3 {
+    color: var(--primary);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+#studentContentArea p {
+    font-size: 16px;
+    margin-bottom: 12px;
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 8px;
+}
+
+#studentContentArea p strong {
+    color: var(--primary-light);
+}
+
+/* Grid layout custom styles inside student content area */
+#studentContentArea div[style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+    gap: 20px !important;
+    margin-top: 20px;
+}
+
+#studentContentArea div[style*="grid-template-columns"] > div {
+    background: var(--bg) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 24px !important;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+#studentContentArea div[style*="grid-template-columns"] > div:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+/* About Page Styles */
+.about-grid {
+    display: flex;
+    gap: 30px;
+    text-align: justify;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.about-card-ar, .about-card-en {
+    flex: 1;
+    min-width: 320px;
+    background: rgba(37, 99, 235, 0.03);
+    padding: 24px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+}
+
+.about-card-en {
+    text-align: left;
+}
+
+.about-footer-banner {
+    margin-top: 35px;
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--google-yellow), #ca8a04);
+    color: #0f172a;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    box-shadow: var(--shadow-md);
+}
+
+/* Footer styling */
+footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+    font-size: 14px;
+}
+
+footer a {
+    color: var(--primary-light);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .admin-layout {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: 350px;
+    }
+    
+    .edit-panel {
+        width: 100%;
+        height: auto;
+    }
+    
+    .btn {
+        width: 100%;
+        min-width: unset;
+    }
+    
+    .form-container {
+        padding: 25px;
+    }
+    
+    .main-title {
+        font-size: 32px;
+    }
+}
+
+/* Theme Toggle Button Style */
+.theme-toggle-btn {
+    padding: 12px 24px;
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 15px;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid var(--google-blue);
+    background: var(--card-solid);
+    color: var(--google-blue);
+    transition: all var(--transition-fast);
+}
+
+.theme-toggle-btn:hover {
+    background: var(--google-blue);
+    color: #ffffff;
+    box-shadow: var(--shadow-md);
+}
+
+/* Print Overrides */
+@media print {
+    .no-print, .student-tabs, .btn, .mini-btn, .theme-toggle-btn, footer {
+        display: none !important;
+    }
+    
+    .page {
+        display: block !important;
+        padding: 0 !important;
+        background: white !important;
+        color: black !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    #studentContentArea {
+        border: none !important;
+        padding: 0 !important;
+        background: white !important;
+        color: black !important;
+    }
+    
+    .form-container {
+        border: none !important;
+        box-shadow: none !important;
+        background: white !important;
+        padding: 0 !important;
+    }
+}
